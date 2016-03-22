@@ -22,7 +22,7 @@ public class MyApplication extends Application {
         super.onTerminate();
     }
 
-    public static boolean isActivityShowing = false;
+    public static boolean isActivityShowing = true;
     public static int activityShowingCount;
 
     private Application.ActivityLifecycleCallbacks callbacks = new ActivityLifecycleCallbacks() {
@@ -34,7 +34,7 @@ public class MyApplication extends Application {
         @Override
         public void onActivityStarted(Activity activity) {
             activityShowingCount++;
-            changeActivityFlag(activityShowingCount>0);
+            changeActivityFlag(activity,activityShowingCount>0);
             Log.e("FloatingWindow",activity.getClass().getSimpleName()+"-->onActivityStarted-->"+activityShowingCount);
         }
 
@@ -51,7 +51,7 @@ public class MyApplication extends Application {
         @Override
         public void onActivityStopped(Activity activity) {
             activityShowingCount--;
-            changeActivityFlag(activityShowingCount>0);
+            changeActivityFlag(activity,activityShowingCount>0);
             Log.e("FloatingWindow",activity.getClass().getSimpleName()+"-->onActivityStopped-->"+activityShowingCount);
         }
 
@@ -66,11 +66,11 @@ public class MyApplication extends Application {
         }
     };
 
-    public  void changeActivityFlag(boolean isShowing){
+    public  void changeActivityFlag(Activity activity,boolean isShowing){
         if(isActivityShowing==isShowing){
             return;
         }
         isActivityShowing = isShowing;
-        FloatingWindow.changeView(this,isActivityShowing);
+        FloatingWindow.changeView(activity,isActivityShowing);
     }
 }

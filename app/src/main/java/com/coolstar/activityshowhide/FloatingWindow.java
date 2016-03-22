@@ -1,15 +1,21 @@
 package com.coolstar.activityshowhide;
 
+import android.Manifest;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.media.audiofx.BassBoost;
+import android.os.Build;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 /**
  * Created by jiguangxing on 2016/3/22.
@@ -23,7 +29,11 @@ public class FloatingWindow {
         if(isActivityShowing){
             if(floatView!=null){
                 Log.e("FloatingWindow","removeView------------");
-                wndMgr.removeView(floatView);
+                try{
+                    wndMgr.removeView(floatView);
+                }catch (Throwable e){
+
+                }
                 floatView = null;
             }
         }else{
@@ -40,8 +50,16 @@ public class FloatingWindow {
             mDeskLrcLayoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
             mDeskLrcLayoutParams.x = 320;
             mDeskLrcLayoutParams.y = 620;
-            Log.e("FloatingWindow","addView------------");
-            wndMgr.addView(floatView,mDeskLrcLayoutParams);
+            if(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP_MR1){
+                if(Settings.canDrawOverlays(appContext)){
+                    Log.e("FloatingWindow","addView------------");
+                    wndMgr.addView(floatView,mDeskLrcLayoutParams);
+                }else{
+                    Toast.makeText(appContext,"无权限，不能显示桌面浮动按钮",Toast.LENGTH_SHORT).show();
+                }
+            }else{
+                wndMgr.addView(floatView,mDeskLrcLayoutParams);
+            }
         }
     }
 }
