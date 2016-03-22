@@ -1,0 +1,8 @@
+# ActivityShowHide
+
+##例子验证了在Android4.0以后增加的ActivityLifecycleCallbacks接口，可以用来实现应用判断自身是前后台状态，从而替代原来旧版中
+使用activityManager.getRunningAppProcesses()或getRunningTasks进行当前显示Activity是否是当前应用的功能，后二者函数在6.0的
+新系统中也不能正常使用了。
+
+使用Android Studio 2.0 beta6 创建默认工程进行例子编写，注意权限要声明到AndroidManifest.xml中，
+然后再在特定位置进行是否授权通过的判断。
